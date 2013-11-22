@@ -72,10 +72,15 @@ object NetPong extends App{
           Player.yVary = Player.yVary + Player.speed
       }
       case Keyboard.KEY_SPACE => {
-        Ball.setInMotion()
+        if(!Ball.isInMotion)
+          Ball.setInMotion()
       }
       case Keyboard.KEY_R => {
-        Display.destroy(); this.run()
+        Ball.reset()
+        Player.reset()
+        Computer.reset()
+        Display.destroy()
+        this.run()
       }
       case _ => false
     }
