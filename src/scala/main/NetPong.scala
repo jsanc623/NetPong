@@ -10,18 +10,18 @@ object NetPong extends App{
   def run() : Any = {
     this.init()
 
+    Stage.main()
     Player.reset()
     Computer.reset()
     Ball.reset()
 
+    Keyboard.enableRepeatEvents(true)
+
     while(!Display.isCloseRequested()){
       Color.white.bind()
-
-      this.input()
       this.render()
-      Display.update()
-
       this.step += 1
+      Display.update()
     }
 
     this.destroy()
@@ -38,27 +38,45 @@ object NetPong extends App{
     GL11.glLoadIdentity()
     GL11.glOrtho(0, Display.getWidth(), Display.getHeight(), 0, 1, -1)
     GL11.glMatrixMode(GL11.GL_MODELVIEW)
-    GL11.glEnable(GL11.GL_BLEND)
   }
 
   def destroy() : Any = {
-    GL11.glDisable(GL11.GL_BLEND)
     Display.destroy()
   }
 
   def render() : Any = {
+    GL11.glClear(GL11.GL_COLOR_BUFFER_BIT)
+    GL11.glEnable(GL11.GL_BLEND)
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
+
+    while(Keyboard.next()){
+      if(Keyboard.getEventKeyState())
+        this.input()
+    }
+
     Stage.main()
     Player.main()
     Computer.main()
+    Ball.main()
+    GL11.glDisable(GL11.GL_BLEND)
   }
 
   def input(): Any = {
     val key_event = Keyboard.getEventKey() match {
-      case Keyboard.KEY_UP => {}
-      case Keyboard.KEY_DOWN => {}
-      case Keyboard.KEY_SPACE => {}
-      case Keyboard.KEY_R => { Display.destroy(); this.run() }
+      case Keyboard.KEY_UP => {
+        if(Ball.isInMotion && Player.yVary > -375)
+          Player.yVary = Player.yVary + (-1 * Player.speed)
+      }
+      case Keyboard.KEY_DOWN => {
+        if(Ball.isInMotion && Player.yVary < 375)
+          Player.yVary = Player.yVary + Player.speed
+      }
+      case Keyboard.KEY_SPACE => {
+        Ball.setInMotion()
+      }
+      case Keyboard.KEY_R => {
+        Display.destroy(); this.run()
+      }
       case _ => false
     }
   }

@@ -8,7 +8,7 @@ object Stage {
   }
 
   def net(xPos : Float, yPos : Float){
-    GL11.glColor3f(1.0f,0.0f,0.0f)
+    GL11.glColor3f(0.1f,0.1f,0.1f)
 
     GL11.glBegin(GL11.GL_QUADS)
     GL11.glVertex2f(xPos, yPos - yPos)
