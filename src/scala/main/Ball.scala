@@ -11,6 +11,7 @@ object Ball {
   var initialPositionX: Float = this.xPos
   var finalPositionY: Float = 0
   var finalPositionX: Float = Display.getWidth()
+  var riseRun: Float = 0
   var isInMotion: Boolean = false
 
   def main(){
@@ -28,10 +29,9 @@ object Ball {
   }
 
   def followTrajectory(){
-    val riseRun = Math.abs((this.initialPositionY - this.finalPositionY) / (this.initialPositionX - this.finalPositionX))
-    print(this.finalPositionX + " " + this.finalPositionY + " /// " + this.initialPositionX + " " + this.initialPositionY + " /// " + this.xPos + " " + this.yPos + "\n" )
-    this.xPos = this.xPos + (riseRun * this.velocity)
-    this.yPos = this.yPos + (riseRun * this.velocity)
+    this.xPos = this.xPos + (this.riseRun * this.velocity)
+    this.yPos = this.yPos + (this.riseRun * this.velocity)
+    //print(finalPositionX + ", " + finalPositionY + " ")
     //print(xPos + ", " + yPos + " \n")
   }
 
@@ -41,6 +41,7 @@ object Ball {
 
     this.initialPositionY = this.yPos.toInt
     this.finalPositionY = new Random().nextInt(high-low) + low
+    this.riseRun = this.finalPositionY / Math.abs(this.finalPositionX)
   }
 
   def draw(xPos : Float = this.xPos, yPos: Float = this.yPos) : Any = {
