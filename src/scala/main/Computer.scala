@@ -2,13 +2,13 @@ package scala.main
 
 import org.lwjgl.opengl.Display
 
-object Player {
+object Computer {
   def main(){
     Paddle.draw(Paddle.xPos, Paddle.yPos)
   }
 
   def reset() : Any = {
-    Paddle.xPos = 10
+    Paddle.xPos = Display.getWidth() - 20
     Paddle.yPos = (Display.getHeight() / 2) - (Paddle.height / 2)
     this.main()
   }

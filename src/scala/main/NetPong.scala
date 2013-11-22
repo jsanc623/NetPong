@@ -4,58 +4,64 @@ import org.lwjgl.input.Keyboard
 import org.newdawn.slick.Color
 import org.lwjgl.opengl.{GL11, Display, DisplayMode}
 
-object NetPong extends App {
-  class NetPong extends App{
-    var step: Int = 0
+object NetPong extends App{
+  var step: Int = 0
 
-    def run() : Any = {
-      this.initDisplay()
+  def run() : Any = {
+    this.init()
 
-      while(!Display.isCloseRequested()){
-        Color.white.bind()
+    Player.reset()
+    Computer.reset()
+    Ball.reset()
 
-        this.input()
-        this.render()
-        Display.update()
+    while(!Display.isCloseRequested()){
+      Color.white.bind()
 
-        this.step += 1
-      }
+      this.input()
+      this.render()
+      Display.update()
 
-      this.killDisplay()
+      this.step += 1
     }
 
-    def initDisplay() : Any = {
-      Display.setDisplayMode(new DisplayMode(800, 800))
-      Display.setTitle("Scala NetPong v1.0")
-      Display.setVSyncEnabled(true)
-      Display.setResizable(false)
-      Display.create()
+    this.destroy()
+  }
 
-      GL11.glEnable(GL11.GL_BLEND)
-    }
+  def init() : Any = {
+    Display.setDisplayMode(new DisplayMode(800, 800))
+    Display.setTitle("Scala NetPong v1.0")
+    Display.setVSyncEnabled(true)
+    Display.setResizable(false)
+    Display.create()
 
-    def killDisplay() : Any = {
-      GL11.glDisable(GL11.GL_BLEND)
-      Display.destroy()
-    }
+    GL11.glMatrixMode(GL11.GL_2D)
+    GL11.glLoadIdentity()
+    GL11.glOrtho(0, Display.getWidth(), Display.getHeight(), 0, 1, -1)
+    GL11.glMatrixMode(GL11.GL_MODELVIEW)
+    GL11.glEnable(GL11.GL_BLEND)
+  }
 
-    def render() : Any = {
-      GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
-    }
+  def destroy() : Any = {
+    GL11.glDisable(GL11.GL_BLEND)
+    Display.destroy()
+  }
 
-    def input(): Any = {
-      val key_event = Keyboard.getEventKey() match {
-        case Keyboard.KEY_UP => {}
-        case Keyboard.KEY_DOWN => {}
-        case Keyboard.KEY_SPACE => {}
-        case Keyboard.KEY_R => { Display.destroy(); this.run() }
-        case _ => false
-      }
+  def render() : Any = {
+    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
+    Stage.main()
+    Player.main()
+    Computer.main()
+  }
+
+  def input(): Any = {
+    val key_event = Keyboard.getEventKey() match {
+      case Keyboard.KEY_UP => {}
+      case Keyboard.KEY_DOWN => {}
+      case Keyboard.KEY_SPACE => {}
+      case Keyboard.KEY_R => { Display.destroy(); this.run() }
+      case _ => false
     }
   }
 
-
-
-  val NetPong = new NetPong
-  NetPong.run()
+  run()
 }
